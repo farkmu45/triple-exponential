@@ -31,6 +31,8 @@ class Login extends BaseLogin
                     ->label('Nama pengguna')
                     ->required()
                     ->autocomplete()
+                    ->autofocus()
+                    ->extraInputAttributes(['tabindex' => 1])
                     ->maxLength(255),
                 $this->getPasswordFormComponent(),
                 $this->getRememberFormComponent(),
@@ -67,7 +69,7 @@ class Login extends BaseLogin
 
         $data = $this->form->getState();
 
-        if (! Filament::auth()->attempt($this->getCredentialsFromFormData($data), $data['remember'] ?? false)) {
+        if (!Filament::auth()->attempt($this->getCredentialsFromFormData($data), $data['remember'] ?? false)) {
             throw ValidationException::withMessages([
                 'data.username' => __('filament-panels::pages/auth/login.messages.failed'),
             ]);

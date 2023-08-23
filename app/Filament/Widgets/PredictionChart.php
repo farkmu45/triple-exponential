@@ -9,17 +9,17 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Get;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
-class SaleChart extends ApexChartWidget
+class PredictionChart extends ApexChartWidget
 {
-    protected static string $chartId = 'saleChart';
+    protected static string $chartId = 'predictionChart';
     protected int|string|array $columnSpan = 'full';
-    protected static ?string $heading = 'Grafik Penjualan';
+    protected static ?string $heading = 'Grafik Hasil Produksi';
 
     protected function getFormSchema(): array
     {
 
-        $dateEnd = Carbon::parse(Production::orderBy('date', 'desc')->first()['date']);
-        $dateStart = Carbon::parse($dateEnd)->subDays(7);
+        $dateEnd = Carbon::parse(Prediction::orderBy('date', 'desc')->first()['date']);
+        $dateStart = Carbon::parse($dateEnd)->subDays(14);
 
         return [
             DatePicker::make('date_start')
@@ -58,12 +58,12 @@ class SaleChart extends ApexChartWidget
             ],
             'series' => [
                 [
-                    'name' => 'Total Penjualan',
+                    'name' => 'Total Produksi',
                     'data' => $productions->map(fn ($value) => $value->weight),
                 ],
 
                 [
-                    'name' => 'Prediksi Penjualan',
+                    'name' => 'Prediksi Hasil Produksi',
                     'data' => $forecastedProductions->map(fn ($value) => $value->weight),
                 ],
             ],

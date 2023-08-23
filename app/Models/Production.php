@@ -4,8 +4,10 @@ namespace App\Models;
 
 use App\Statistic\TripleExponentialSmoothing;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Http;
 
 class Production extends Model
 {
@@ -27,31 +29,24 @@ class Production extends Model
         $data = [];
         foreach ($productions as $production) {
             $formattedProduction = null;
-            $formattedProduction['weight'] = $production->weight + 100;
+            $formattedProduction['weight'] = $production->weight;
             $formattedProduction['date'] = Carbon::parse($production->date)->format('Y-m-d');
             array_push($data, $formattedProduction);
         }
 
-        // $model = new TripleExponentialSmoothing(
-        //     data: $data,
-        //     alpha: 0.2,
-        //     beta: 0.3,
-        //     gamma: 0.5,
-        //     seasonalPeriod: 24
-        // );
-
-        Prediction::insert($data);
+        $response = Http::post('https://farkmu45-triple-expo.hf.space/forecast?length=20', $data);
+        Prediction::insert(json_decode($response->body(), true));
     }
 
 
     protected static function booted(): void
     {
-        static::saved(function (Production $production) {
-            static::forecast();
-        });
+        static::saved(
+            fn () => static::forecast()
+        );
 
-        static::deleted(function (Production $production) {
-            static::forecast();
-        });
+        static::deleted(
+            fn () => static::forecast()
+        );
     }
 }
