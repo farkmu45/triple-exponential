@@ -36,15 +36,10 @@ class ProductionResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $maxDate = Carbon::parse(Production::orderBy('date', 'DESC')->first()['date'])->addDay();
-
         return $form
             ->schema([
                 DatePicker::make('date')
                     ->label('Tanggal')
-                    ->default($maxDate)
-                    ->minDate(fn ($operation) => $operation != 'edit' ? $maxDate : null)
-                    ->maxDate(fn ($operation) => $operation != 'edit' ? $maxDate : null)
                     ->unique(ignoreRecord: true)
                     ->native(false)
                     ->disabledOn('edit')
