@@ -12,7 +12,9 @@ use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 class PredictionChart extends ApexChartWidget
 {
     protected static string $chartId = 'predictionChart';
+
     protected int|string|array $columnSpan = 'full';
+
     protected static ?string $heading = 'Grafik Hasil Produksi';
 
     protected function getFormSchema(): array
@@ -39,7 +41,7 @@ class PredictionChart extends ApexChartWidget
                 ->afterStateUpdated(function () {
                     $this->updateOptions();
                 })
-                ->default($dateEnd)
+                ->default($dateEnd),
 
         ];
     }

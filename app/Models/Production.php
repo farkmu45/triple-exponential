@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use App\Statistic\TripleExponentialSmoothing;
 use Carbon\Carbon;
-use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Http;
@@ -14,7 +12,9 @@ class Production extends Model
     use HasFactory;
 
     protected $guarded = [''];
+
     public $timestamps = false;
+
     protected $primaryKey = 'date';
 
     protected $casts = [
@@ -37,7 +37,6 @@ class Production extends Model
         $response = Http::post('https://farkmu45-triple-expo.hf.space/forecast?length=20', $data);
         Prediction::insert(json_decode($response->body(), true));
     }
-
 
     protected static function booted(): void
     {

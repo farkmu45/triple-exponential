@@ -10,6 +10,7 @@ class Prediction extends Model
     use HasFactory;
 
     protected $primaryKey = 'date';
+
     protected $guarded = [''];
 
     protected $casts = [

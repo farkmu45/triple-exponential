@@ -2,23 +2,13 @@
 
 namespace App\Filament\Pages\Auth;
 
+use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Pages\Auth\Login as BaseLogin;
-use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
-use DanHarrin\LivewireRateLimiting\WithRateLimiting;
-use Filament\Actions\Action;
-use Filament\Actions\ActionGroup;
-use Filament\Facades\Filament;
-use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\Component;
 use Filament\Http\Responses\Auth\Contracts\LoginResponse;
 use Filament\Notifications\Notification;
-use Filament\Pages\Concerns\InteractsWithFormActions;
-use Filament\Pages\SimplePage;
-use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\HtmlString;
+use Filament\Pages\Auth\Login as BaseLogin;
 use Illuminate\Validation\ValidationException;
 
 class Login extends BaseLogin
@@ -69,7 +59,7 @@ class Login extends BaseLogin
 
         $data = $this->form->getState();
 
-        if (!Filament::auth()->attempt($this->getCredentialsFromFormData($data), $data['remember'] ?? false)) {
+        if (! Filament::auth()->attempt($this->getCredentialsFromFormData($data), $data['remember'] ?? false)) {
             throw ValidationException::withMessages([
                 'data.username' => __('filament-panels::pages/auth/login.messages.failed'),
             ]);

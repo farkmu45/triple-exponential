@@ -2,27 +2,16 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PredictionResource\Pages\ManageProductions;
 use App\Filament\Resources\ProductionResource\Pages;
 use App\Models\Production;
-use App\Models\Sale;
-use Carbon\Carbon;
-use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Resources\Pages\EditRecord;
 use Filament\Resources\Resource;
-use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\TextColumn\TextColumnSize;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProductionResource extends Resource
 {
@@ -66,8 +55,8 @@ class ProductionResource extends Resource
                     TextColumn::make('weight')
                         ->label('Berat')
                         ->sortable()
-                        ->formatStateUsing(fn (string $state): string =>  $state . ' kg')
-                ])->from('md')
+                        ->formatStateUsing(fn (string $state): string => $state.' kg'),
+                ])->from('md'),
             ])
             ->defaultSort('date', 'desc')
             ->actions([

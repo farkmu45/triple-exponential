@@ -3,21 +3,17 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PredictionResource\Pages;
-use App\Filament\Resources\PredictionResource\RelationManagers;
 use App\Models\Prediction;
 use Carbon\Carbon;
-use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PredictionResource extends Resource
 {
@@ -54,8 +50,8 @@ class PredictionResource extends Resource
                     TextColumn::make('weight')
                         ->label('Berat')
                         ->sortable()
-                        ->formatStateUsing(fn (string $state): string =>  $state . ' kg')
-                ])->from('md')
+                        ->formatStateUsing(fn (string $state): string => $state.' kg'),
+                ])->from('md'),
             ])
             ->defaultSort('date', 'desc')
             ->filters([
@@ -86,7 +82,7 @@ class PredictionResource extends Resource
                                 $data['created_until'],
                                 fn (Builder $query, $date): Builder => $query->whereDate('date', '<=', $date),
                             );
-                    })
+                    }),
             ]);
     }
 
